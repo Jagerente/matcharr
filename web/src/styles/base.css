@@ -1,0 +1,372 @@
+:root {
+  --canvas: #0d0c0f;
+  --bg: #131217;
+  --surface: #1c1a22;
+  --surface-2: #1a1922;
+  --raised: #262430;
+  --raised-2: #3a3540;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-soft: rgba(255, 255, 255, 0.05);
+  --text: #f2eff4;
+  --text-2: #a09aab;
+  --text-3: #918b99;
+  --text-body: #c4bfcc;
+  --text-on-image: #d3cdda;
+  --muted: #6a6575;
+  --accent: #ff0054;
+  --accent-soft: rgba(255, 0, 84, 0.14);
+  --accent-line: rgba(255, 0, 84, 0.25);
+  --accent-border: rgba(255, 0, 84, 0.4);
+  --accent-border-strong: rgba(255, 0, 84, 0.6);
+  /* the accent itself only clears 4.5:1 against the canvas, small accent
+     text on a lifted surface needs this lighter tint */
+  --accent-text: #ff5c8a;
+  --on-accent: #fff;
+  --online: #57c98a;
+  --online-soft: rgba(87, 201, 138, 0.14);
+  --online-border: rgba(87, 201, 138, 0.5);
+  --warn: #d8b06a;
+  --star: #f0c56a;
+
+  --radius-xs: 6px;
+  --radius-s: 10px;
+  --radius-m: 14px;
+  --radius-l: 16px;
+  --radius-xl: 20px;
+  --radius-sheet: 28px;
+  --radius-pill: 999px;
+  /* square plates keep a proportional corner so a 52px badge and an 88px
+     preview read as the same shape */
+  --radius-plate: 30%;
+
+  /* 1.2 ratio from a 16px base; emoji glyphs are graphics, not text, and keep
+     explicit pixel sizes */
+  --fs-1: 11px;
+  --fs-2: 13px;
+  --fs-3: 16px;
+  --fs-4: 19px;
+  --fs-5: 23px;
+  --fs-6: 28px;
+  --fs-7: 33px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --backdrop: rgba(8, 7, 10, 0.72);
+  --scrim: linear-gradient(transparent, rgba(9, 7, 8, 0.92));
+  --scrim-tall: linear-gradient(transparent 45%, rgba(9, 7, 8, 0.92));
+
+  --shadow-rest: 0 8px 24px -8px rgba(0, 0, 0, 0.7);
+  --shadow-card: 0 24px 40px -18px rgba(0, 0, 0, 0.8);
+  --shadow-toast: 0 12px 30px -10px rgba(0, 0, 0, 0.7);
+  --glow-match: 0 0 52px -8px rgba(255, 0, 84, 0.5);
+  --glow-hint: 0 0 24px -8px rgba(255, 0, 84, 0.45);
+
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --t-press: 120ms;
+  --t-item: 180ms;
+  --t-card: 200ms;
+  --t-screen: 220ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  /* no native press-highlight rectangle on mobile, :active scale is ours */
+  -webkit-tap-highlight-color: transparent;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--raised-2) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--raised-2);
+  border-radius: var(--radius-pill);
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-border);
+  outline-offset: 2px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* no overflow:hidden here: removing the root scroller kills Android
+     pull-to-refresh; containment lives on .app via overflow clip */
+}
+
+body {
+  background: var(--canvas);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  /* counters and slider readouts update in place, proportional digits would
+     jitter their width on every change */
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.98);
+  transition: transform var(--t-press);
+}
+
+input,
+select {
+  font: inherit;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -150% 0;
+  }
+}
+
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes match-pop {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.btn {
+  width: 100%;
+  height: 56px;
+  border: none;
+  border-radius: var(--radius-l);
+  font-weight: 600;
+  font-size: var(--fs-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn--primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn--secondary {
+  height: 50px;
+  background: var(--surface);
+  border: 1px solid transparent;
+  color: var(--text);
+  font-size: var(--fs-3);
+}
+
+.sheet .btn--secondary {
+  background: var(--raised);
+}
+
+.btn-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  border: 1px solid transparent;
+  color: var(--text-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.label {
+  font-size: var(--fs-3);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.label--accent {
+  color: var(--accent-text);
+}
+
+.label--loud {
+  font-size: var(--fs-4);
+  font-weight: 700;
+}
+
+.note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-l);
+  padding: 16px 18px;
+  font-size: var(--fs-3);
+  line-height: 1.4;
+  color: var(--text-body);
+}
+
+.hero-glyph {
+  font-size: 40px;
+  line-height: 1;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.poster-fallback {
+  background:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0 10px, transparent 10px 20px),
+    var(--raised);
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 0%, var(--raised) 50%, var(--surface) 100%);
+  background-size: 300% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    background: var(--surface);
+    animation: none;
+  }
+}
+
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--backdrop);
+  animation: fade-rise var(--t-screen) var(--ease);
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 61;
+  margin: 0 auto;
+  max-width: 480px;
+  background: var(--surface-2);
+  border-top: 1px solid var(--border);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  padding: 14px 24px 30px;
+  animation: fade-rise var(--t-screen) var(--ease);
+}
+
+.sheet__grab {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0 14px;
+  margin: -4px -24px 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+.sheet__grab:active {
+  cursor: grabbing;
+}
+
+.sheet__handle {
+  width: 40px;
+  height: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--raised-2);
+  margin: 0;
+}

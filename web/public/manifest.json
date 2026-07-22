@@ -1,0 +1,14 @@
+{
+  "name": "matcharr",
+  "short_name": "matcharr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "theme_color": "#131217",
+  "background_color": "#141014",
+  "icons": [
+    { "src": "favicon/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "favicon/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "favicon/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

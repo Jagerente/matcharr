@@ -1,0 +1,9 @@
+/bin/
+/web/node_modules/
+/web/dist/*
+!/web/dist/.gitkeep
+/config/
+/design/
+.env
+.idea/
+.vscode/
