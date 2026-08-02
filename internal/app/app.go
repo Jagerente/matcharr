@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"path/filepath"
 
+	"github.com/Jagerente/matcharr/internal/client/radarr"
 	"github.com/Jagerente/matcharr/internal/client/seerr"
 	"github.com/Jagerente/matcharr/internal/client/tmdb"
 	"github.com/Jagerente/matcharr/internal/config"
@@ -69,9 +70,16 @@ func New(cfg *config.Config, logger *slog.Logger) (*App, error) {
 	catalogSvc := catalog.New(presets, tmdbSource, sessions)
 
 	var requester request.Requester
-	if cfg.Seerr.URL != "" {
+	switch {
+	case cfg.Seerr.URL != "":
 		requester = seerr.New(cfg.Seerr.URL, cfg.Seerr.APIKey)
 		logger.Info("Seerr integration enabled", "url", cfg.Seerr.URL)
+		if cfg.Radarr.URL != "" {
+			logger.Warn("both Seerr and Radarr are configured, requests go through Seerr")
+		}
+	case cfg.Radarr.URL != "":
+		requester = radarr.New(cfg.Radarr.URL, cfg.Radarr.APIKey, cfg.Radarr.RootFolder)
+		logger.Info("Radarr integration enabled", "url", cfg.Radarr.URL)
 	}
 	requests := request.New(sessions, requester, logger)
 

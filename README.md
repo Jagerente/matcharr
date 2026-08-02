@@ -57,8 +57,10 @@ sorted by like count and shown with per-participant stats.
 
 **After the match.** With `MATCHARR__SEERR__URL` configured, the host gets
 a Request button and a Radarr quality profile picker for any movie in the
-deck. Leave it empty and the button disappears, leaving matcharr as a
-picker.
+deck. No Seerr? Point `MATCHARR__RADARR__URL` at Radarr directly and the
+same button adds the movie there, monitored and searching. When both are
+set, Seerr wins. Leave both empty and the button disappears, leaving
+matcharr as a picker.
 
 **How it's built.** A single image, no database, since sessions
 are ephemeral by nature and live in memory.
@@ -160,6 +162,9 @@ which fetches metadata and posters on their behalf.
 | `MATCHARR__IMAGE__MAXFILEMB`         | ceiling on one poster download, MB               | `4`                              |
 | `MATCHARR__SEERR__URL`               | Seerr address, empty hides the Request button    | empty                            |
 | `MATCHARR__SEERR__APIKEY`            | Seerr API key                                    | none                             |
+| `MATCHARR__RADARR__URL`              | Radarr address, used when Seerr is not set       | empty                            |
+| `MATCHARR__RADARR__APIKEY`           | Radarr API key                                   | none                             |
+| `MATCHARR__RADARR__ROOTFOLDER`       | root folder for added movies                     | Radarr's first root folder       |
 | `MATCHARR__SESSION__TTL`             | outer ceiling on any session                     | `24h`                            |
 | `MATCHARR__SESSION__EMPTYGRACE`      | lifetime with nobody connected or calling        | `15m`                            |
 | `MATCHARR__SESSION__FINISHEDTTL`     | how long results stay fetchable                  | `1h`                             |
@@ -270,7 +275,7 @@ in `internal/app`.
 
 | Method and path                                 | What it does                                           |
 |-------------------------------------------------|--------------------------------------------------------|
-| `GET /api/config`                               | public flags, such as whether Seerr is enabled         |
+| `GET /api/config`                               | public flags, such as whether requests are enabled     |
 | `GET /api/genres`                               | genre options for the filter builder                   |
 | `GET /api/presets`                              | preset list                                            |
 | `GET /api/image/{size}/{file}`                  | poster proxy cache (`w185` and `w500`)                 |
@@ -289,7 +294,7 @@ in `internal/app`.
 | `POST /api/sessions/{code}/leave`               | leave for good (guest)                                 |
 | `DELETE /api/sessions/{code}/participants/{id}` | kick (host)                                            |
 | `GET /api/sessions/{code}/request/profiles`     | Radarr quality profiles (host)                         |
-| `POST /api/sessions/{code}/request`             | `{movieId, profileId}` sends a request to Seerr (host) |
+| `POST /api/sessions/{code}/request`             | `{movieId, profileId}` to Seerr or Radarr (host)       |
 | `GET /api/sessions/{code}/ws?token=`            | session event WebSocket                                |
 | `GET /healthz`                                  | health, always at the root, outside `URLBASE`          |
 

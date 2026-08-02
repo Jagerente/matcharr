@@ -19,6 +19,7 @@ type Config struct {
 	TMDB    TMDB    `title:"TMDB" envPrefix:"MATCHARR__TMDB__"`
 	Image   Image   `title:"Image" envPrefix:"MATCHARR__IMAGE__"`
 	Seerr   Seerr   `title:"Seerr" envPrefix:"MATCHARR__SEERR__"`
+	Radarr  Radarr  `title:"Radarr" envPrefix:"MATCHARR__RADARR__"`
 	Session Session `title:"Session" envPrefix:"MATCHARR__SESSION__"`
 	Limits  Limits  `title:"Limits" envPrefix:"MATCHARR__LIMITS__"`
 	Metrics Metrics `title:"Metrics" envPrefix:"MATCHARR__METRICS__"`
@@ -58,6 +59,12 @@ func (i Image) MaxFileBytes() int64 { return i.MaxFileMB << 20 }
 type Seerr struct {
 	URL    string `env:"URL,omitempty"`
 	APIKey string `env:"APIKEY,omitempty"`
+}
+
+type Radarr struct {
+	URL        string `env:"URL,omitempty"`
+	APIKey     string `env:"APIKEY,omitempty"`
+	RootFolder string `env:"ROOTFOLDER,omitempty"`
 }
 
 type Session struct {

@@ -439,7 +439,7 @@ async function readRequestSetup(): Promise<void> {
     const saved = Number(localStorage.getItem(QUALITY_KEY))
     qualityProfileId.value = profiles.some((p) => p.id === saved) ? saved : defaultId
   } catch {
-    /* Seerr falls back to its own default profile */
+    /* the backend falls back to the default quality profile */
   }
 }
 
